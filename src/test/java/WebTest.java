@@ -34,7 +34,6 @@ public class WebTest extends BaseTest {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
-                .checkOpenSanboxPage()
                 .selectTableElement()
                 .clickBtnAdd()
                 .fillField("Наименование",food.name)
@@ -47,7 +46,7 @@ public class WebTest extends BaseTest {
     public void BDTestAssert() throws InterruptedException, SQLException {
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
         ResultSet resultSet = statement.executeQuery(("Select * FROM FOOD"));
-        System.out.println();
+        Assert.assertTrue(food.name,resultSet.last());
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")

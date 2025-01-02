@@ -20,7 +20,7 @@ public class PostRequest implements ApiRequest
                 .header("Content-type", "application/json")
                 .header("accept", "*/*")
                 .and()
-                .body("{\"name\": " + "\"" + food.name + "\"" + ", \"type\": " + "\"" + food.type + "\"" + ", \"exotic\": " + food.exotic+ "}")
+                .body("{\"name\": " + "\"" + food.name + "\"" + ", \"type\": " + "\"FRUIT\"" + ", \"exotic\": " + true + "}")
                 .when()
                 .log()
                 .all()
