@@ -94,17 +94,15 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <testFailureIgnore>false</testFailureIgnore>
+                    <systemProperties>
+                        <property>
+                            <name>allure.results.directory</name>
+                            <value>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/allure-results</value>
+                        </property>
+                    </systemProperties>
                     <argLine>
                         -Dfile.encoding=${project.build.sourceEncoding}
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.junit4.AllureJunit4</value>
-                        </property>
-                    </properties>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" </argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -112,7 +110,6 @@
                         <artifactId>aspectjweaver</artifactId>
                         <version>${aspectj.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
                 </dependencies>
             </plugin>
 
@@ -120,9 +117,10 @@
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.12.0</version>
+                <inherited>false</inherited>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
-                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <resultsDirectory>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -131,7 +129,7 @@
                 <version>3.13.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                    <release>17</release>
+                    <release>21</release>
                 </configuration>
             </plugin>
         </plugins>
