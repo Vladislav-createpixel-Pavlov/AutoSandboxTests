@@ -94,7 +94,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
                     <systemProperties>
                         <property>
                             <name>allure.results.directory</name>
