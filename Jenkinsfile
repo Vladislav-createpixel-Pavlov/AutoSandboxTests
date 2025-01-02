@@ -8,7 +8,7 @@ pipeline {
         stage('build') {
             steps {
                 echo %packageType%
-                bat 'mvn clean test -Dtest=%packageType%'
+                bat 'mvn clean test -Dtest=$packageType'
             }
         post {                
                 // If Maven was able to run the tests, even if some of the test
