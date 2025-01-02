@@ -4,10 +4,6 @@ pipeline {
         maven 'Maven'
         jdk 'Java'
     }
-    parameters {
-
-            choice(name: "packageType", choices: ["WebTest.java", "APITest.java", "DbTest.java"], description: "Sample multi-choice parameter")
-        }
     stages {
         stage('build') {
             steps {
