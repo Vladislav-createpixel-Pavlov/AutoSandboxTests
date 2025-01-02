@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                echo %packageType%
+                echo "%packageType%"
                 bat 'mvn clean test -Dtest=${params.packageType}'
             }
         post {                
@@ -25,4 +25,4 @@ pipeline {
         }
 }
 }
-/
+
