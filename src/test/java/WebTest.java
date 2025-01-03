@@ -45,8 +45,9 @@ public class WebTest extends BaseTest {
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void BDTestAssert() throws InterruptedException, SQLException {
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
-        ResultSet resultSet = statement.executeQuery(("Select * FROM FOOD"));
-        Assert.assertTrue(food.name,resultSet.last());
+        ResultSet result = BaseTest.DBSelect("SELECT * FROM FOOD");
+        Allure.addAttachment("Результат", "application/json", String.valueOf(result));
+        Assert.assertTrue(food.name,result.last());
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.request;
 import static org.example.PropConst.*;
 import static org.example.PropConst.BASE_URL;
 
@@ -53,6 +54,18 @@ public class BaseTest
                 .log().all()
                 .extract().response();
         cookie = putResponse.cookie("JSESSIONID");
+    }
+    protected static ResultSet DBSelect(String query) {
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery(query);
+
+        }
+        catch (Exception e)
+        {
+
+        };
+        return resultSet;
     }
     @Step
     protected static ResponseBody Select(String URI){
