@@ -41,9 +41,10 @@ public class DbTest extends BaseTest
     public void ApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
-        Assert.assertEquals(200,response.getStatusCode());
-        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
         Allure.addAttachment("Результат", "application/json", response.body().prettyPrint());
         Allure.addAttachment("Результат", "application/json", request.toString());
+        Assert.assertEquals(200,response.getStatusCode());
+        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
+
     }
 }
