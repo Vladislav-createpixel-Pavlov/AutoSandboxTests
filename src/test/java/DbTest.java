@@ -33,7 +33,8 @@ public class DbTest extends BaseTest
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
-                .selectTableElement();
+                .selectTableElement()
+                .AssertTableElement(food.name);
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")

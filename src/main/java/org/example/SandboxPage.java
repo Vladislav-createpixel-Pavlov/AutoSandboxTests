@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SandboxPage extends BasePage
@@ -56,8 +57,18 @@ public class SandboxPage extends BasePage
     @Step
     public SandboxPage selectTableElement() {
         for (WebElement menuItem : elementTable) {
-            System.out.println(menuItem.getText());
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(menuItem.getText());
         }
         return pageManager.getSandboxPage();
+    }
+    @Step
+    public void AssertTableElement(String assert_element) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (WebElement menuItem : elementTable) {
+
+            arrayList.add(menuItem.getText());
+        }
+        Assert.assertTrue(arrayList.contains(assert_element));
     }
 }
