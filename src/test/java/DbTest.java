@@ -43,7 +43,7 @@ public class DbTest extends BaseTest
         Response response = request.sendRequest();
         Assert.assertEquals(200,response.getStatusCode());
         Assert.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
-        Allure.addAttachment("Результат", "application/json", String.valueOf(response));
+        Allure.addAttachment("Результат", "application/json", response.body().prettyPrint());
         Allure.addAttachment("Результат", "application/json", request.toString());
     }
 }
