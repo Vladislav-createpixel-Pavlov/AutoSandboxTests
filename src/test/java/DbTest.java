@@ -2,6 +2,7 @@ import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.example.Food;
 import org.example.FoodGenerator;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 public class DbTest extends BaseTest
 {
     Food food = FoodGenerator.getRandomFood();
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("CRUD опреции с товарами через БД")
     public void BDTestInsert() throws InterruptedException, SQLException {
 
@@ -31,7 +32,7 @@ public class DbTest extends BaseTest
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
     }
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
     public void WebTest() throws InterruptedException, SQLException {
         app.getMainPage()
@@ -41,7 +42,7 @@ public class DbTest extends BaseTest
                 .selectTableElement()
                 .AssertTableElement(food.name);
     }
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void ApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
