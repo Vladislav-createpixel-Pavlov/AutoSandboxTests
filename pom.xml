@@ -98,7 +98,7 @@
                     <systemProperties>
                         <property>
                             <name>allure.results.directory</name>
-                            <value>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/allure-results</value>
+                            <value>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/target/allure-results</value>
                         </property>
                     </systemProperties>
                     <argLine>
@@ -121,7 +121,7 @@
                 <inherited>false</inherited>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
-                    <resultsDirectory>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/allure-results</resultsDirectory>
+                    <resultsDirectory>C:/ProgramData/Jenkins/.jenkins/workspace/AutoSandboxTests/target/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
             <plugin>
