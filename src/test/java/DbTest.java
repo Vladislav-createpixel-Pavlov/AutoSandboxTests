@@ -2,11 +2,8 @@ import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.example.Food;
 import org.example.FoodGenerator;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
