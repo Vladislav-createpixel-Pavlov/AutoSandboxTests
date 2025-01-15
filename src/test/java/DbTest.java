@@ -51,6 +51,5 @@ public class DbTest extends BaseTest
         Allure.addAttachment("Результат", "application/json", request.toString());
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
-
     }
 }
