@@ -4,10 +4,12 @@ import io.restassured.response.Response;
 import org.example.Food;
 import org.example.FoodGenerator;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,12 +21,12 @@ import java.util.ArrayList;
  * 3) Проверка что в БД - отображаются действия проделанные в API
  * 2) Проверка что в веб части портала - меню "Песочница"->"Товары" - отображаются действия проделанные в API
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITest extends BaseTest{
     Food food = FoodGenerator.getRandomFood();
     @Test
     @DisplayName("Сброс и добавление товара через API")
-    public void ApiTest() throws SQLException {
+    public void aApiTest() throws SQLException {
 
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
@@ -36,7 +38,7 @@ public class APITest extends BaseTest{
     }
     @Test
     @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в API")
-    public void WebTest() throws InterruptedException, SQLException {
+    public void bWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
@@ -46,12 +48,13 @@ public class APITest extends BaseTest{
     }
     @Test
     @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
-    public void BDTest() throws InterruptedException, SQLException {
+    public void cBDTest() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
         Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
         ArrayList<String> result = new ArrayList<>();
-        result.add(resultSet.getString(2));
         while(resultSet.next()){
+            result.add(resultSet.getString(2));
+
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
         Assertions.assertTrue(result.contains(food.name));

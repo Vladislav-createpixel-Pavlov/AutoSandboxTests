@@ -7,6 +7,7 @@ import org.example.Food;
 import org.example.FoodGenerator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,7 @@ import org.junit.runners.Parameterized;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 /**
@@ -44,10 +46,14 @@ public class WebTest extends BaseTest {
     @Test
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void BDTestAssert() throws InterruptedException, SQLException {
-        System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
-        ResultSet result = BaseTest.DBSelect("SELECT * FROM FOOD");
-        Allure.addAttachment("Результат", "application/json", String.valueOf(result));
-        Assert.assertTrue(food.name,result.last());
+        ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
+        Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
+        ArrayList<String> result = new ArrayList<>();
+        while(resultSet.next()){
+            result.add(resultSet.getString(2));
+            System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
+        }
+        Assertions.assertTrue(result.contains(food.name));
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
