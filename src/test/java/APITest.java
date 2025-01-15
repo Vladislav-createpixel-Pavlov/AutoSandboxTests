@@ -1,13 +1,17 @@
+import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 
 import org.example.Food;
 import org.example.FoodGenerator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Автотесты - вариант 3
@@ -37,12 +41,20 @@ public class APITest extends BaseTest{
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
-                .selectTableElement();
-
+                .selectTableElement()
+                .AssertTableElement(food.name);
     }
     @Test
     @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
     public void BDTest() throws InterruptedException, SQLException {
+        ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
+        Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
+        ArrayList<String> result = new ArrayList<>();
+        result.add(resultSet.getString(2));
+        while(resultSet.next()){
+            System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
+        }
+        Assertions.assertTrue(result.contains(food.name));
 
 
     }
