@@ -2,9 +2,11 @@ import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.example.Food;
 import org.example.FoodGenerator;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +17,14 @@ import java.sql.SQLException;
  * 2) Проверка что в веб части портала - меню "Песочница"->"Товары" - отображаются действия проделанные в БД
  * 3) Проверка что в API отобрадаются действия проделанные в БД
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
 public class DbTest extends BaseTest
 {
     Food food = FoodGenerator.getRandomFood();
     @Test
     @DisplayName("CRUD опреции с товарами через БД")
-    public void BDTestInsert() throws InterruptedException, SQLException {
+    public void aBDTestInsert() throws InterruptedException, SQLException {
 
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
         BaseTest.DBInsert("INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
@@ -34,7 +37,7 @@ public class DbTest extends BaseTest
     }
     @Test
     @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
-    public void WebTest() throws InterruptedException, SQLException {
+    public void bWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
@@ -44,7 +47,7 @@ public class DbTest extends BaseTest
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void ApiTestAssert() throws InterruptedException, SQLException {
+    public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Результат", "application/json", response.body().prettyPrint());

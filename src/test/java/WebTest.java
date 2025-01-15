@@ -6,6 +6,7 @@ import org.checkerframework.checker.index.qual.LowerBoundBottom;
 import org.example.Food;
 import org.example.FoodGenerator;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 
 import java.sql.ResultSet;
@@ -26,13 +28,13 @@ import java.util.stream.Stream;
  * 2) Проверка что в БД отображаются действия из Web формы меню "Песочница"->"Товары"
  * 3) Проверка что в API отобрадаются действия из Web формы меню "Песочница"->"Товары"
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WebTest extends BaseTest {
     Food food = FoodGenerator.getRandomFood();
 
     @Test
     @DisplayName("Сброс и добавление товара через Web часть")
-    public void WebTest() throws InterruptedException, SQLException {
+    public void aWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
@@ -45,7 +47,7 @@ public class WebTest extends BaseTest {
     }
     @Test
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void BDTestAssert() throws InterruptedException, SQLException {
+    public void bBDTestAssert() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
         Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
         ArrayList<String> result = new ArrayList<>();
@@ -57,7 +59,7 @@ public class WebTest extends BaseTest {
     }
     @Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void ApiTestAssert() throws InterruptedException, SQLException {
+    public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Результат", "application/json", String.valueOf(response));
