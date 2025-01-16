@@ -9,11 +9,18 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Автотесты - вариант 3
@@ -23,9 +30,17 @@ import java.util.ArrayList;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITest extends BaseTest{
-    Food food = FoodGenerator.getRandomFood();
-    @Test
+    static Food food = FoodGenerator.getRandomFood();
+    static public Stream<Arguments> GenerateFood()
+    {
+
+        return Stream.of(
+                arguments(food));
+
+    }
     @DisplayName("Сброс и добавление товара через API")
+    @ParameterizedTest()
+    @MethodSource("GenerateFood")
     public void aApiTest() throws SQLException {
 
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);

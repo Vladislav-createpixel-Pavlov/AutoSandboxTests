@@ -15,8 +15,11 @@ import org.junit.runners.Parameterized;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
@@ -33,6 +36,7 @@ public class BaseTest
 
     static Connection connection;
     static Statement statement;
+
     protected static String QueryBuilder(String operation){
         StringBuilder query = new StringBuilder();
         query.append(operation);
@@ -108,6 +112,7 @@ public class BaseTest
     @Step
     @Before
     public void beforeAll() throws SQLException, IOException {
+        System.out.println("beforeAll");
         connection = java.sql.DriverManager.getConnection(
                 "jdbc:h2:tcp://localhost:9092/mem:testdb",
                 "user",
@@ -116,12 +121,6 @@ public class BaseTest
         statement = connection.createStatement(
                 ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        System.out.println("beforeAll");
-
-        // Добавить проверку процесса запуска стенда, если процесс не запущен, то запустить.
-//         Runtime.getRuntime().exec("cd C:\\Working Project");
-//        Runtime.getRuntime().exec("java -jar qualit-sandbox.jar");
-
         InitManager.initFramework();
 
     }
