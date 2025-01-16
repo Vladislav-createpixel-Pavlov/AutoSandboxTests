@@ -39,19 +39,19 @@ public class APITest extends BaseTest{
 
     }
     @DisplayName("Сброс и добавление товара через API")
-    @ParameterizedTest(name = "Сброс и добавление товара через API")
+    @ParameterizedTest()
     @MethodSource("GenerateFood")
     public void aApiTest() throws SQLException {
 
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
-        Assert.assertEquals(200,response.getStatusCode());
+        Assertions.assertEquals(200,response.getStatusCode());
 //        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
 //        Response response = request.sendRequest();
 //        Assert.assertEquals(200,response.getStatusCode());
 //        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains("Помидор"));
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в API")
     public void bWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
