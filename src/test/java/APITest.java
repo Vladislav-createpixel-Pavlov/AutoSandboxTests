@@ -5,10 +5,10 @@ import org.example.Food;
 import org.example.FoodGenerator;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,13 +39,14 @@ public class APITest extends BaseTest{
 
     }
     @DisplayName("Сброс и добавление товара через API")
-    @ParameterizedTest()
+    @ParameterizedTest
     @MethodSource("GenerateFood")
     public void aApiTest() throws SQLException {
 
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
         Assertions.assertEquals(200,response.getStatusCode());
+        Allure.addAttachment("Результат", "application/json", request.toString());
 //        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
 //        Response response = request.sendRequest();
 //        Assert.assertEquals(200,response.getStatusCode());

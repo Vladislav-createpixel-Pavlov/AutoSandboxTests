@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public class WebTest extends BaseTest {
     Food food = FoodGenerator.getRandomFood();
 
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Сброс и добавление товара через Web часть")
     public void aWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
@@ -45,7 +45,7 @@ public class WebTest extends BaseTest {
                 .fillChechBox(food.exotic)
                 .clickSave();
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void bBDTestAssert() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
@@ -57,7 +57,7 @@ public class WebTest extends BaseTest {
         }
         Assertions.assertTrue(result.contains(food.name));
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);

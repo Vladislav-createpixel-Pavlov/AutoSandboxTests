@@ -22,7 +22,7 @@ import java.sql.SQLException;
 public class DbTest extends BaseTest
 {
     Food food = FoodGenerator.getRandomFood();
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("CRUD опреции с товарами через БД")
     public void aBDTestInsert() throws InterruptedException, SQLException {
 
@@ -35,7 +35,7 @@ public class DbTest extends BaseTest
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
     public void bWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
@@ -45,7 +45,7 @@ public class DbTest extends BaseTest
                 .selectTableElement()
                 .AssertTableElement(food.name);
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
