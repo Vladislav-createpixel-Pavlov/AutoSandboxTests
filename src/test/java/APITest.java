@@ -65,13 +65,14 @@ public class APITest extends BaseTest{
     @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
     public void cBDTest() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
-        Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
         ArrayList<String> result = new ArrayList<>();
         while(resultSet.next()){
             result.add(resultSet.getString(2));
 
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
+        Allure.addAttachment("Результат", "application/json", String.valueOf(result));
+
         Assertions.assertTrue(result.contains(food.name));
 
 
