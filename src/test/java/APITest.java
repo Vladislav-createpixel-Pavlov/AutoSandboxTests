@@ -61,7 +61,7 @@ public class APITest extends BaseTest{
                 .selectTableElement()
                 .AssertTableElement(food.name);
     }
-    @Test
+    @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
     public void cBDTest() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");

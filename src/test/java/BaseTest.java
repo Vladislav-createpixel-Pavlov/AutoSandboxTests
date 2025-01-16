@@ -110,8 +110,8 @@ public class BaseTest
     }
 
     @Step
-    @Before
-    public void beforeAll() throws SQLException, IOException {
+    @BeforeAll
+    public static void beforeAll() throws SQLException, IOException {
         System.out.println("beforeAll");
         connection = java.sql.DriverManager.getConnection(
                 "jdbc:h2:tcp://localhost:9092/mem:testdb",
@@ -126,13 +126,13 @@ public class BaseTest
     }
 
     @Step
-    @BeforeClass
-    public static void beforeEach() throws SQLException {
+    @BeforeEach
+    public void beforeEach() throws SQLException {
         driverManager.getDriver().get(TestPropManager.getTestPropManager().getProperty(BASE_URL));
     }
 
     @Step
-    @AfterClass
+    @AfterAll
     public static void afterAll() throws SQLException {
         InitManager.quitFramework();
         statement.execute(QueryBuilder("DELETE FROM FOOD WHERE FOOD_ID = (SELECT MAX(FOOD_ID) FROM FOOD)"));
