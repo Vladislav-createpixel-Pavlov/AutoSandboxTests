@@ -49,7 +49,8 @@ public class WebTest extends BaseTest {
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
     public void bBDTestAssert() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
-        Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
+        Allure.addAttachment("Запрос", "application/json", "Select * FROM FOOD");
+        Allure.addAttachment("Ответ", "application/json", String.valueOf(resultSet));
         ArrayList<String> result = new ArrayList<>();
         while(resultSet.next()){
             result.add(resultSet.getString(2));
@@ -62,8 +63,8 @@ public class WebTest extends BaseTest {
     public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
-        Allure.addAttachment("Результат", "application/json", String.valueOf(response));
-        Allure.addAttachment("Результат", "application/json", request.toString());
+        Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
+        Allure.addAttachment("Запрос", "application/json", request.toString());
         Assert.assertEquals(200,response.getStatusCode());
         Assert.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
 

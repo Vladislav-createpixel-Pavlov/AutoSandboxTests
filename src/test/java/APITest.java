@@ -46,7 +46,7 @@ public class APITest extends BaseTest{
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
         Assertions.assertEquals(200,response.getStatusCode());
-        Allure.addAttachment("Результат", "application/json", request.toString());
+        Allure.addAttachment("Запрос", "application/json", request.toString());
 //        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
 //        Response response = request.sendRequest();
 //        Assert.assertEquals(200,response.getStatusCode());
@@ -72,7 +72,7 @@ public class APITest extends BaseTest{
 
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
-        Allure.addAttachment("Результат", "application/json", String.valueOf(result));
+        Allure.addAttachment("Ответ", "application/json", String.valueOf(result));
 
         Assertions.assertTrue(result.contains(food.name));
 

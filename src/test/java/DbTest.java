@@ -29,8 +29,7 @@ public class DbTest extends BaseTest
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
         BaseTest.DBInsert("INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
-        Allure.addAttachment("Результат", "application/json", String.valueOf(resultSet));
-        Allure.addAttachment("Результат", "application/json","INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
+        Allure.addAttachment("Запрос", "application/json","INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
         while(resultSet.next()){
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
@@ -50,8 +49,8 @@ public class DbTest extends BaseTest
     public void cApiTestAssert() throws InterruptedException, SQLException {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
-        Allure.addAttachment("Результат", "application/json", response.body().prettyPrint());
-        Allure.addAttachment("Результат", "application/json", request.toString());
+        Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());
+        Allure.addAttachment("Запрос", "application/json", request.toString());
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
     }
