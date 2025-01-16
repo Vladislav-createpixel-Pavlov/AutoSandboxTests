@@ -39,7 +39,7 @@ public class APITest extends BaseTest{
 
     }
     @DisplayName("Сброс и добавление товара через API")
-    @ParameterizedTest()
+    @ParameterizedTest(name = "Сброс и добавление товара через API")
     @MethodSource("GenerateFood")
     public void aApiTest() throws SQLException {
 
