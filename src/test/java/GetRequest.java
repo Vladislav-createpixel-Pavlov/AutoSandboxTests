@@ -1,3 +1,4 @@
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -8,7 +9,7 @@ public class GetRequest implements ApiRequest
     {
         this.url=url;
     }
-
+    @Step
     @Override
     public Response sendRequest() {
         return (Response) RestAssured

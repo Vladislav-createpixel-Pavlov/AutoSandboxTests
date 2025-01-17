@@ -1,6 +1,7 @@
 package org.example;
 
 import io.qameta.allure.Step;
+import org.asynchttpclient.util.Assertions;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -69,6 +70,6 @@ public class SandboxPage extends BasePage
 
             arrayList.add(menuItem.getText());
         }
-        Assert.assertTrue(arrayList.contains(assert_element));
+        Assert.assertTrue("Товар: "+assert_element+" не найден или отсутствует!",arrayList.contains(assert_element));
     }
 }

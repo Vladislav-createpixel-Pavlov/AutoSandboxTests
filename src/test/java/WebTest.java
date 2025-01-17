@@ -56,7 +56,7 @@ public class WebTest extends BaseTest {
             result.add(resultSet.getString(2));
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
-        Assertions.assertTrue(result.contains(food.name));
+        Assertions.assertTrue(result.contains(food.name),"Товар: "+food.name+" не найден в таблице или отсутствует!");
     }
     @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
@@ -66,8 +66,7 @@ public class WebTest extends BaseTest {
         Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
         Allure.addAttachment("Запрос", "application/json", request.toString());
         Assert.assertEquals(200,response.getStatusCode());
-        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name));
-
+        Assert.assertTrue("Товар: "+food.name+" отсутствует в ответе API!",response.getBody().jsonPath().getString("name").contains(food.name));
     }
 
 

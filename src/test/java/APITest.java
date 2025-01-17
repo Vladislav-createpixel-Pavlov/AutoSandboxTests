@@ -74,7 +74,7 @@ public class APITest extends BaseTest{
         }
         Allure.addAttachment("Ответ", "application/json", String.valueOf(result));
 
-        Assertions.assertTrue(result.contains(food.name));
+        Assertions.assertTrue(result.contains(food.name),"Товар: "+food.name+" не найден в таблице или отсутствует!");
 
 
     }
