@@ -1,4 +1,4 @@
-import org.example.Food;
+import org.example.data.Food;
 
 public class RequestFactory
 {

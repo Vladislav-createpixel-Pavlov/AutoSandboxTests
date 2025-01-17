@@ -1,7 +1,6 @@
-package org.example;
+package org.example.pages;
 
 import io.qameta.allure.Step;
-import org.asynchttpclient.util.Assertions;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,14 +35,6 @@ public class SandboxPage extends BasePage
         Assert.fail("Меню '" + nameBaseMenu + "' не было найдено на главной странице!");
         return this;
     }
-//    @Step
-//    public SandboxPage selectTableElement() {
-//        for (WebElement menuItem : elementTable) {
-//            System.out.println(menuItem.getText());
-//        }
-//        return this;
-//    }
-
     @Step
     public AddPage clickBtnAdd() {
         waitUtilElementToBeClickable(btmAdd).click();

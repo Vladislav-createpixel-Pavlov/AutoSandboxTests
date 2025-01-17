@@ -1,7 +1,7 @@
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.Food;
+import org.example.data.Food;
 
 public class PostRequest implements ApiRequest
 {

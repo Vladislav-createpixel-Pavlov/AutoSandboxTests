@@ -1,4 +1,4 @@
-package org.example;
+package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.junit.Assert;
@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
-import java.util.Objects;
 
 public class MainPage extends BasePage {
 

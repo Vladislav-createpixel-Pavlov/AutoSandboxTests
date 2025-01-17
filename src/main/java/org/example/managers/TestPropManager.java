@@ -1,4 +1,4 @@
-package org.example;
+package org.example.managers;
 
 import java.io.File;
 import java.io.FileInputStream;

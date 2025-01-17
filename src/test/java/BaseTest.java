@@ -3,27 +3,26 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import org.example.*;
-import org.example.DriverManager;
+import org.example.data.Food;
+import org.example.data.FoodGenerator;
+import org.example.managers.DriverManager;
+import org.example.pages.PageManager;
+import org.example.managers.InitManager;
+import org.example.managers.TestPropManager;
 import org.junit.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
-import static org.example.PropConst.BASE_URL;
+import static org.example.managers.PropConst.BASE_URL;
 
 public class BaseTest
 {
@@ -113,7 +112,7 @@ public class BaseTest
 
     @Step
     @BeforeAll
-    public static void beforeAll() throws SQLException, IOException {
+    public static void beforeAll() throws SQLException {
         System.out.println("beforeAll");
         connection = java.sql.DriverManager.getConnection(
                 "jdbc:h2:tcp://localhost:9092/mem:testdb",
@@ -129,7 +128,7 @@ public class BaseTest
 
     @Step
     @BeforeEach
-    public void beforeEach() throws SQLException {
+    public void beforeEach() {
         driverManager.getDriver().get(TestPropManager.getTestPropManager().getProperty(BASE_URL));
     }
 

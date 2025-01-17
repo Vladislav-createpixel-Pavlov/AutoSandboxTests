@@ -1,4 +1,4 @@
-package org.example;
+package org.example.managers;
 
 import org.apache.commons.exec.OS;
 import org.junit.Assert;
@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static org.example.PropConst.*;
+import static org.example.managers.PropConst.*;
 
 public class DriverManager
 {

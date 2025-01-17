@@ -1,8 +1,8 @@
-package org.example;
+package org.example.managers;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.example.PropConst.*;
+import static org.example.managers.PropConst.*;
 
 public class InitManager
 {

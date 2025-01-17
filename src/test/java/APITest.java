@@ -1,18 +1,14 @@
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 
-import org.example.Food;
-import org.example.FoodGenerator;
-import org.junit.Assert;
+import org.example.data.Food;
+import org.example.data.FoodGenerator;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
@@ -41,7 +37,7 @@ public class APITest extends BaseTest{
     @DisplayName("Сброс и добавление товара через API")
     @ParameterizedTest
     @MethodSource("GenerateFood")
-    public void aApiTest() throws SQLException {
+    public void aApiTest() {
 
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();

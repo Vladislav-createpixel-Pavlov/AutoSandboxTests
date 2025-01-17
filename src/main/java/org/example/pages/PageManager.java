@@ -1,4 +1,4 @@
-package org.example;
+package org.example.pages;
 
 public class PageManager {
     private static PageManager pageManager;

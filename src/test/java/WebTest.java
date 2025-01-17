@@ -1,26 +1,15 @@
 import io.qameta.allure.Allure;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
-import org.checkerframework.checker.index.qual.LowerBoundBottom;
-import org.example.Food;
-import org.example.FoodGenerator;
+import org.example.data.Food;
+import org.example.data.FoodGenerator;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 /**
  * Автотесты - вариант 1
@@ -34,7 +23,7 @@ public class WebTest extends BaseTest {
 
     @org.junit.jupiter.api.Test
     @DisplayName("Сброс и добавление товара через Web часть")
-    public void aWebTest() throws InterruptedException, SQLException {
+    public void aWebTest() {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
@@ -47,7 +36,7 @@ public class WebTest extends BaseTest {
     }
     @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void bBDTestAssert() throws InterruptedException, SQLException {
+    public void bBDTestAssert() throws SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
         Allure.addAttachment("Запрос", "application/json", "Select * FROM FOOD");
         Allure.addAttachment("Ответ", "application/json", String.valueOf(resultSet));
@@ -60,7 +49,7 @@ public class WebTest extends BaseTest {
     }
     @org.junit.jupiter.api.Test
     @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void cApiTestAssert() throws InterruptedException, SQLException {
+    public void cApiTestAssert() {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());

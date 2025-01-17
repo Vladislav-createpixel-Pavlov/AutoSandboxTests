@@ -1,6 +1,7 @@
-package org.example;
+package org.example.pages;
 
 import io.qameta.allure.Step;
+import org.example.managers.DriverManager;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
