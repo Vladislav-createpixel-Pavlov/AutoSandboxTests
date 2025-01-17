@@ -1,16 +1,12 @@
-import com.github.javafaker.Faker;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
-import org.example.data.Food;
-import org.example.data.FoodGenerator;
 import org.example.managers.DriverManager;
 import org.example.pages.PageManager;
 import org.example.managers.InitManager;
 import org.example.managers.TestPropManager;
 import org.junit.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.rules.TestWatcher;
@@ -30,9 +26,6 @@ public class BaseTest
 
     private static final DriverManager driverManager = DriverManager.getDriverManager();
 
-    static Faker faker = new Faker();
-    static String cookie = null;
-
     static Connection connection;
     static Statement statement;
 
@@ -43,24 +36,7 @@ public class BaseTest
         return query.toString();
 
     }
-    @Step
-    protected static void Insert(String URI,String name,String type,Boolean exotic) {
-        Food food = FoodGenerator.getRandomFood();
-        Response putResponse = given()
-                .baseUri(URI)
-                .header("Content-type", "application/json")
-                .header("accept", "*/*")
-                .and()
-                .body("{\"name\": " + "\"" + name + "\"" + ", \"type\": " + "\"" + type + "\"" + ", \"exotic\": " + exotic + "}")
-                .when()
-                .log()
-                .all()
-                .post("api/food")
-                .then()
-                .log().all()
-                .extract().response();
-        cookie = putResponse.cookie("JSESSIONID");
-    }
+
     @Step
     protected static ResultSet DBSelect(String query) throws SQLException {
         return statement.executeQuery(query);
@@ -75,22 +51,7 @@ public class BaseTest
 
         };
     }
-    @Step
-    protected static ResponseBody Select(String URI){
-        ResponseBody getResponse = given()
-                .baseUri(URI)
-                .header("accept", "*/*")
-                //.cookie("JSESSIONID",cookie)
-                .when()
-                .log().all()
-                .get("api/food")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .extract().response();
 
-        return getResponse;
-    }
     @Rule
     public TestWatcher watchman = new TestWatcher() {
         @Override
