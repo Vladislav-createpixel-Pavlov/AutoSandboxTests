@@ -62,9 +62,11 @@ public class BaseTest
                 .extract().response();
         cookie = putResponse.cookie("JSESSIONID");
     }
+    @Step
     protected static ResultSet DBSelect(String query) throws SQLException {
         return statement.executeQuery(query);
     }
+    @Step
     protected static void DBInsert(String query) throws SQLException {
         try {
             statement.execute(query);
