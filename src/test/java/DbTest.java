@@ -21,7 +21,7 @@ public class DbTest extends BaseTest
 {
     Food food = FoodGenerator.getRandomFood();
     @org.junit.jupiter.api.Test
-    @DisplayName("CRUD опреции с товарами через БД")
+    @DisplayName("CRUD опереции с товарами через БД")
     public void aBDTestInsert() throws SQLException {
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
         BaseTest.DBInsert("INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
@@ -47,7 +47,7 @@ public class DbTest extends BaseTest
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());
-        Allure.addAttachment("Запрос", "application/json", request.toString());
+        Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name),"Товар: "+food.name+" отсутствует в ответе API!");
     }

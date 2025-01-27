@@ -53,7 +53,7 @@ public class WebTest extends BaseTest {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
-        Allure.addAttachment("Запрос", "application/json", request.toString());
+        Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
         Assert.assertEquals(200,response.getStatusCode());
         Assert.assertTrue("Товар: "+food.name+" отсутствует в ответе API!",response.getBody().jsonPath().getString("name").contains(food.name));
     }

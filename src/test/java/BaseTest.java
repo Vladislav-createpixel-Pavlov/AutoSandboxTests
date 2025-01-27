@@ -62,14 +62,13 @@ public class BaseTest
     };
 
     private void takeScreenshotAndAttach(String methodName) {
-        if (driverManager.getDriver() instanceof TakesScreenshot tsDriver) {
             // Convert WebDriver instance to TakesScreenshot
             // Capture screenshot
+            TakesScreenshot tsDriver = (TakesScreenshot) driverManager.getDriver();
             byte[] screenshot = tsDriver.getScreenshotAs(OutputType.BYTES);
             // Attach screenshot to Allure report
             Allure.addAttachment(methodName + "_screenshot", "image/png", Arrays.toString(screenshot), "png");
         }
-    }
 
     @Step
     @BeforeAll
