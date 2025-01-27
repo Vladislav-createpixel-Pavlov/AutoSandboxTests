@@ -51,24 +51,26 @@ public class BaseTest
 
         };
     }
-
     @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            // Take a screenshot when test fails
-            takeScreenshotAndAttach(description.getMethodName());
-        }
-    };
+    public TestListener testListener = new TestListener();
 
-    private void takeScreenshotAndAttach(String methodName) {
-            // Convert WebDriver instance to TakesScreenshot
-            // Capture screenshot
-            TakesScreenshot tsDriver = (TakesScreenshot) driverManager.getDriver();
-            byte[] screenshot = tsDriver.getScreenshotAs(OutputType.BYTES);
-            // Attach screenshot to Allure report
-            Allure.addAttachment(methodName + "_screenshot", "image/png", Arrays.toString(screenshot), "png");
-        }
+//    @Rule
+//    public TestWatcher watchman = new TestWatcher() {
+//        @Override
+//        protected void failed(Throwable e, Description description) {
+//            // Take a screenshot when test fails
+//            takeScreenshotAndAttach(description.getMethodName());
+//        }
+//    };
+//
+//    private void takeScreenshotAndAttach(String methodName) {
+//            // Convert WebDriver instance to TakesScreenshot
+//            // Capture screenshot
+//            TakesScreenshot tsDriver = (TakesScreenshot) driverManager.getDriver();
+//            byte[] screenshot = tsDriver.getScreenshotAs(OutputType.BYTES);
+//            // Attach screenshot to Allure report
+//            Allure.addAttachment(methodName + "_screenshot", "image/png", Arrays.toString(screenshot), "png");
+//        }
 
     @Step
     @BeforeAll
