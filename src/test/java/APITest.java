@@ -6,6 +6,7 @@ import org.example.data.FoodGenerator;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  * 3) Проверка что в БД - отображаются действия проделанные в API
  * 2) Проверка что в веб части портала - меню "Песочница"->"Товары" - отображаются действия проделанные в API
  */
+@ExtendWith(MyExecution.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITest extends BaseTest{
     static Food food = FoodGenerator.getRandomFood();
