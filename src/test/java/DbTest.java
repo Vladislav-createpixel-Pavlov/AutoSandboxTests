@@ -2,9 +2,11 @@ import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.example.data.Food;
 import org.example.data.FoodGenerator;
+import org.example.pages.MainPage;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ import java.sql.SQLException;
 public class DbTest extends BaseTest
 {
     Food food = FoodGenerator.getRandomFood();
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("CRUD опереции с товарами через БД")
     public void aBDTestInsert() throws SQLException {
         System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
@@ -30,20 +32,20 @@ public class DbTest extends BaseTest
         while(resultSet.next()){
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
-    }
-    @org.junit.jupiter.api.Test
-    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
-    public void bWebTest() {
+
+//    @org.junit.jupiter.api.Test
+//    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
+//    public void bWebTest() {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
                 .selectTableElement()
                 .AssertTableElement(food.name);
-    }
-    @org.junit.jupiter.api.Test
-    @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-    public void cApiTestAssert() {
+
+//    @org.junit.jupiter.api.Test
+//    @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
+//    public void cApiTestAssert() {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
         Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());

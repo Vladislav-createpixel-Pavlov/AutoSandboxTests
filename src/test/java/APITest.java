@@ -3,9 +3,11 @@ import io.restassured.response.Response;
 
 import org.example.data.Food;
 import org.example.data.FoodGenerator;
+import org.example.pages.MainPage;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,21 +27,20 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  * 3) Проверка что в БД - отображаются действия проделанные в API
  * 2) Проверка что в веб части портала - меню "Песочница"->"Товары" - отображаются действия проделанные в API
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITest extends BaseTest{
+    // лучше не делать static - до выполнения подгружается в память каждый раз при рекомпиляции
     static Food food = FoodGenerator.getRandomFood();
     static public Stream<Arguments> GenerateFood()
     {
-
         return Stream.of(
                 arguments(food));
 
     }
-    @DisplayName("Сброс и добавление товара через API")
+    @DisplayName("Сброс и добавление товара через API и проверка на Web и в БД")
     @ParameterizedTest
     @MethodSource("GenerateFood")
-    public void aApiTest() {
-
+    public void aApiTest() throws SQLException {
+        //
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
         Assertions.assertEquals(200,response.getStatusCode());
@@ -48,20 +49,20 @@ public class APITest extends BaseTest{
 //        Response response = request.sendRequest();
 //        Assert.assertEquals(200,response.getStatusCode());
 //        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains("Помидор"));
-    }
-    @org.junit.jupiter.api.Test
-    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в API")
-    public void bWebTest() throws InterruptedException, SQLException {
+
+//    @org.junit.jupiter.api.Test
+//    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в API")
+//    public void bWebTest() throws InterruptedException, SQLException {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
                 .selectTableElement()
                 .AssertTableElement(food.name);
-    }
-    @org.junit.jupiter.api.Test
-    @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
-    public void cBDTest() throws InterruptedException, SQLException {
+   // }
+//    @org.junit.jupiter.api.Test
+//    @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
+//    public void cBDTest() throws InterruptedException, SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
         ArrayList<String> result = new ArrayList<>();
         while(resultSet.next()){
