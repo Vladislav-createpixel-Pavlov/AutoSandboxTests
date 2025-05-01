@@ -1,4 +1,5 @@
 import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.example.data.Food;
@@ -16,6 +17,7 @@ public class PostRequest implements ApiRequest
     @Override
     public Response sendRequest() {
         return RestAssured.given()
+                .filter(new AllureRestAssured())
                 .disableCsrf()
                 .baseUri(url)
                 .header("Content-type", "application/json")

@@ -11,6 +11,7 @@ import org.junit.runners.MethodSorters;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Автотесты - вариант 1
@@ -39,13 +40,14 @@ public class WebTest extends BaseTest {
 //    @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
 //    public void bBDTestAssert() throws SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
-        Allure.addAttachment("Запрос", "application/json", "Select * FROM FOOD");
-        Allure.addAttachment("Ответ", "application/json", String.valueOf(resultSet));
+
         ArrayList<String> result = new ArrayList<>();
         while(resultSet.next()){
             result.add(resultSet.getString(2));
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
+        Allure.addAttachment("Запрос", "application/json", "Select * FROM FOOD");
+        Allure.addAttachment("Ответ", "application/json", result.toString());
         Assertions.assertTrue(result.contains(food.name),"Товар: "+food.name+" не найден в таблице или отсутствует!");
 
 //    @org.junit.jupiter.api.Test
@@ -53,8 +55,8 @@ public class WebTest extends BaseTest {
 //    public void cApiTestAssert() {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
-        Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
-        Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
+       // Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
+      //  Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
         Assert.assertEquals(200,response.getStatusCode());
         Assert.assertTrue("Товар: "+food.name+" отсутствует в ответе API!",response.getBody().jsonPath().getString("name").contains(food.name));
     }

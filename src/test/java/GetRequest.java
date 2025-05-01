@@ -1,4 +1,5 @@
 import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -14,6 +15,7 @@ public class GetRequest implements ApiRequest
     public Response sendRequest() {
         return (Response) RestAssured
                 .given()
+                .filter(new AllureRestAssured())
                 .when()
                 .get(url)
                 .then()

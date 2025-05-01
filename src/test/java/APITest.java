@@ -29,7 +29,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  */
 public class APITest extends BaseTest{
     // лучше не делать static - до выполнения подгружается в память каждый раз при рекомпиляции
-    static Food food = FoodGenerator.getRandomFood();
+    static Food food = new FoodGenerator().getRandomFood();
     static public Stream<Arguments> GenerateFood()
     {
         return Stream.of(
@@ -44,7 +44,7 @@ public class APITest extends BaseTest{
         ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
         Response response = request.sendRequest();
         Assertions.assertEquals(200,response.getStatusCode());
-        Allure.addAttachment("Запрос", "application/json", request.toString());
+      //  Allure.addAttachment("Запрос", "application/json", request.toString());
 //        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
 //        Response response = request.sendRequest();
 //        Assert.assertEquals(200,response.getStatusCode());

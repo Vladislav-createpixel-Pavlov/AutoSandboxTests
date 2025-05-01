@@ -48,8 +48,8 @@ public class DbTest extends BaseTest
 //    public void cApiTestAssert() {
         ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
         Response response = request.sendRequest();
-        Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());
-        Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
+       // Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());
+      //  Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name),"Товар: "+food.name+" отсутствует в ответе API!");
     }
