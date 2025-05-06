@@ -1,25 +1,16 @@
 import io.qameta.allure.Allure;
-import io.restassured.response.Response;
 
-import org.example.data.Food;
-import org.example.data.FoodGenerator;
-import org.example.pages.MainPage;
-import org.junit.FixMethodOrder;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runners.MethodSorters;
+import pojos.GoodsPojo;
+import services.FoodService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Автотесты - вариант 3
@@ -28,41 +19,22 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  * 2) Проверка что в веб части портала - меню "Песочница"->"Товары" - отображаются действия проделанные в API
  */
 public class APITest extends BaseTest{
+    private static FoodService foodService = new FoodService();
     // лучше не делать static - до выполнения подгружается в память каждый раз при рекомпиляции
-    static Food food = new FoodGenerator().getRandomFood();
-    static public Stream<Arguments> GenerateFood()
-    {
-        return Stream.of(
-                arguments(food));
-
-    }
+    static GoodsPojo food = FoodGenerator.createFood();
+    @Test
     @DisplayName("Сброс и добавление товара через API и проверка на Web и в БД")
-    @ParameterizedTest
-    @MethodSource("GenerateFood")
     public void aApiTest() throws SQLException {
-        //
-        ApiRequest request = RequestFactory.createRequest("POST","http://localhost:8080/",food);
-        Response response = request.sendRequest();
-        Assertions.assertEquals(200,response.getStatusCode());
-      //  Allure.addAttachment("Запрос", "application/json", request.toString());
-//        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
-//        Response response = request.sendRequest();
-//        Assert.assertEquals(200,response.getStatusCode());
-//        Assert.assertTrue(response.getBody().jsonPath().getString("name").contains("Помидор"));
 
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в API")
-//    public void bWebTest() throws InterruptedException, SQLException {
+        Response usersResponse = foodService.createFood(food);
+        Assertions.assertEquals(200,usersResponse.getStatusCode());
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
                 .selectTableElement()
-                .AssertTableElement(food.name);
-   // }
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в БД - отображаются действия проделанные в API")
-//    public void cBDTest() throws InterruptedException, SQLException {
+                .AssertTableElement(food.getName());
+
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
         ArrayList<String> result = new ArrayList<>();
         while(resultSet.next()){
@@ -72,7 +44,7 @@ public class APITest extends BaseTest{
         }
         Allure.addAttachment("Ответ", "application/json", String.valueOf(result));
 
-        Assertions.assertTrue(result.contains(food.name),"Товар: "+food.name+" не найден в таблице или отсутствует!");
+        Assertions.assertTrue(result.contains(food.getName()),"Товар: "+food.getName()+" не найден в таблице или отсутствует!");
 
 
     }

@@ -1,16 +1,16 @@
 import io.qameta.allure.Allure;
-import io.restassured.response.Response;
-import org.example.data.Food;
-import org.example.data.FoodGenerator;
-import org.example.pages.MainPage;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
+import pojos.GoodsPojo;
+import services.FoodService;
+import services.RestResponse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Автотесты - вариант 2
@@ -21,36 +21,30 @@ import java.sql.SQLException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DbTest extends BaseTest
 {
-    Food food = FoodGenerator.getRandomFood();
+    private static FoodService foodService = new FoodService();
+
+    GoodsPojo food = FoodGenerator.createFood();
     @Test
     @DisplayName("CRUD опереции с товарами через БД")
     public void aBDTestInsert() throws SQLException {
-        System.out.printf("Тестовые параметры: %nНазвание:"+ food.name+"%nТип:"+food.type+"%nЭкзотический:"+food.exotic+" %n");
-        BaseTest.DBInsert("INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
+        System.out.printf("Тестовые параметры: %nНазвание:"+ food.getName()+"%nТип:"+food.getName()+"%nЭкзотический:"+food.getExotic()+" %n");
+        BaseTest.DBInsert("INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.getName()+"','VEGETABLE',0)");
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
-        Allure.addAttachment("Запрос", "application/json","INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.name+"','VEGETABLE',0)");
+        Allure.addAttachment("Запрос", "application/json","INSERT INTO FOOD(FOOD_NAME,FOOD_TYPE,FOOD_EXOTIC) VALUES ('"+food.getName()+"','VEGETABLE',0)");
         while(resultSet.next()){
             System.out.println("|"+resultSet.getString(1)+"|"+resultSet.getString(2)+"|"+resultSet.getString(3)+"|");
         }
 
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в веб части портала - меню \"Песочница\"->\"Товары\" - отображаются действия проделанные в БД")
-//    public void bWebTest() {
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .checkOpenSanboxPage()
                 .selectTableElement()
-                .AssertTableElement(food.name);
+                .AssertTableElement(food.getName());
 
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-//    public void cApiTestAssert() {
-        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
-        Response response = request.sendRequest();
-       // Allure.addAttachment("Ответ", "application/json", response.body().prettyPrint());
-      //  Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
-        Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertTrue(response.getBody().jsonPath().getString("name").contains(food.name),"Товар: "+food.name+" отсутствует в ответе API!");
+        RestResponse<List<GoodsPojo>> userResponse = foodService.getFoodList();
+        userResponse.assertCode(200);
+        userResponse.validate("FoodTemplate.json");
+        Assertions.assertTrue(userResponse.extract().contains(food.getName()),"Товар: "+food.getName()+" отсутствует в ответе API!");
     }
 }

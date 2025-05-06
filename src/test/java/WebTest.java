@@ -1,17 +1,16 @@
 import io.qameta.allure.Allure;
-import io.restassured.response.Response;
-import org.example.data.Food;
-import org.example.data.FoodGenerator;
-import org.example.pages.MainPage;
 import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Test;
+import pojos.GoodsPojo;
+import services.FoodService;
+import services.RestResponse;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * Автотесты - вариант 1
@@ -20,25 +19,22 @@ import java.util.Collections;
  * 3) Проверка что в API отобрадаются действия из Web формы меню "Песочница"->"Товары"
  */
 public class WebTest extends BaseTest {
-    Food food = FoodGenerator.getRandomFood();
+    GoodsPojo food = FoodGenerator.createFood();
+    private static FoodService foodService = new FoodService();
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Сброс и добавление товара через Web часть")
     public void aWebTest() throws SQLException {
-       // app.getPage(MainPage.class)
         app.getMainPage()
                 .selectPointOfMenu("Песочница")
                 .selectSubMenu("Товары")
                 .selectTableElement()
                 .clickBtnAdd()
-                .fillField("Наименование",food.name)
-                .fillDropDown(String.valueOf(food.type))
-                .fillChechBox(food.exotic)
+                .fillField("Наименование",food.getName())
+                .fillDropDown("Фрукт")
+                .fillChechBox("Экзотический")
                 .clickSave();
 
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в БД отображаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-//    public void bBDTestAssert() throws SQLException {
         ResultSet resultSet = BaseTest.DBSelect("Select * FROM FOOD");
 
         ArrayList<String> result = new ArrayList<>();
@@ -48,16 +44,12 @@ public class WebTest extends BaseTest {
         }
         Allure.addAttachment("Запрос", "application/json", "Select * FROM FOOD");
         Allure.addAttachment("Ответ", "application/json", result.toString());
-        Assertions.assertTrue(result.contains(food.name),"Товар: "+food.name+" не найден в таблице или отсутствует!");
+        Assertions.assertTrue(result.contains(food.getName()),"Товар: "+food.getName()+" не найден в таблице или отсутствует!");
 
-//    @org.junit.jupiter.api.Test
-//    @DisplayName("Проверка что в API отобрадаются действия из Web формы меню \"Песочница\"->\"Товары\"")
-//    public void cApiTestAssert() {
-        ApiRequest request = RequestFactory.createRequest("GET","http://localhost:8080/api/food",food);
-        Response response = request.sendRequest();
-       // Allure.addAttachment("Ответ", "application/json",response.body().prettyPrint());
-      //  Allure.addAttachment("Запрос", "application/json", "curl -X GET \"http://localhost:8080/api/food\" -H  \"accept: */*\"");
-        Assert.assertEquals(200,response.getStatusCode());
-        Assert.assertTrue("Товар: "+food.name+" отсутствует в ответе API!",response.getBody().jsonPath().getString("name").contains(food.name));
+        RestResponse<List<GoodsPojo>> userResponse = foodService.getFoodList();
+        userResponse.validate("FoodTemplate.json");
+        userResponse.assertCode(200);
+        Assertions.assertTrue(userResponse.extract().contains(food.getName()),"Товар: "+food.getName()+" отсутствует в ответе API!");
+        Assert.assertTrue("Товар: "+food.getName()+" отсутствует в ответе API!",userResponse.extract().contains(food.getName()));
     }
 }

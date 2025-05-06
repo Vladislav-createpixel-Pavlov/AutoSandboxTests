@@ -5,13 +5,16 @@ pipeline {
         jdk 'Java'
     }
     stages {
+    // clean рабочей директории
+       // stage('git clone project')
         stage('build') {
             steps {
+
                 echo "${packageType}"
                 bat "mvn clean"
                 bat "mvn test -Dtest=${packageType}"
-                   }
-        post {                
+            }
+            post {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success { allure([
@@ -22,8 +25,8 @@ pipeline {
                     results: [[path: 'target/allure-results']]
                 ])
             }
-    }
         }
+    }
 }
 }
 

@@ -88,7 +88,4 @@ public class AddPage extends BasePage
         waitUtilElementToBeClickable(save).click();
         return pageManager.getSandboxPage();
     }
-
-
-
 }

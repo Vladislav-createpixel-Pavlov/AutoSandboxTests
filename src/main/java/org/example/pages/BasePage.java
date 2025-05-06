@@ -48,6 +48,4 @@ public class BasePage
         waitUtilElementToBeClickable(field).click();
         field.sendKeys(value);
     }
-
-
 }

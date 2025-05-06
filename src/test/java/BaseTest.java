@@ -1,4 +1,3 @@
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.example.managers.DriverManager;
 import org.example.pages.PageManager;
@@ -6,18 +5,10 @@ import org.example.managers.InitManager;
 import org.example.managers.TestPropManager;
 import org.junit.*;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-
 import java.sql.*;
-import java.util.Arrays;
 
-import static io.restassured.RestAssured.given;
 import static org.example.managers.PropConst.BASE_URL;
 
 public class BaseTest
